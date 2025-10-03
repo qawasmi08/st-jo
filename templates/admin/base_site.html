@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}القوة الضاربة للكمبيوتر وأنظمة المراقبة{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'shop/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">القوة الضاربة للكمبيوتر وأنظمة المراقبة</a></h1>
+{% endblock %}
