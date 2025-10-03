@@ -1,0 +1,27 @@
+:root {
+    --strikeforce-red: #D32F2F;
+    --strikeforce-black: #111111;
+}
+
+#header {
+    background: var(--strikeforce-black);
+}
+
+#header h1, #header a:link, #header a:visited {
+    color: #ffffff;
+}
+
+.module h2, .app-strike-force-shop .module h2 {
+    background: var(--strikeforce-red);
+    color: #ffffff;
+}
+
+.button, input[type="submit"], .submit-row input {
+    background: var(--strikeforce-red);
+    border: none;
+    color: #ffffff;
+}
+
+.button:hover, input[type="submit"]:hover, .submit-row input:hover {
+    background: #b71c1c;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Cairo', 'Amiri', sans-serif; color: #111111; background-color: #ffffff; }
+        h1, h2, h3 { color: #D32F2F; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border: 1px solid #111111; padding: 8px; text-align: right; }
+        th { background-color: #D32F2F; color: #ffffff; }
+        .footer { margin-top: 24px; font-size: 0.9em; }
+        .badge { background-color: #111111; color: #ffffff; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+        .totals { margin-top: 16px; }
+        .totals table { width: auto; }
+        .qr { text-align: center; margin-top: 24px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ store.store_name_ar }}</h1>
+        <p>{{ store.store_name_en }}</p>
+        <p>الخدمة: {{ store.service_area }}</p>
+        <p>الموقع: {{ store.storefront_location }}</p>
+    </header>
+    <section>
+        <h2>عرض سعر تركيب أنظمة المراقبة</h2>
+        <p><strong>رقم الطلب:</strong> {{ order.id }}</p>
+        <p><strong>العميل:</strong> {{ order.customer.name }} - {{ order.customer.phone }}</p>
+        {% if order.site_address %}<p><strong>العنوان:</strong> {{ order.site_address }}، {{ order.site_city }}</p>{% endif %}
+        {% if order.preferred_contact_time %}<p><strong>وقت التواصل المفضل:</strong> {{ order.preferred_contact_time }}</p>{% endif %}
+    </section>
+    <section>
+        <h3>متطلبات المشروع</h3>
+        <p>{{ order.requirement_summary }}</p>
+    </section>
+    <section>
+        <h3>تفاصيل البنود</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>البند</th>
+                    <th>النوع</th>
+                    <th>الكمية</th>
+                    <th>السعر للوحدة</th>
+                    <th>الإجمالي</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for line in order.lines.all %}
+                <tr>
+                    <td>{{ line.name }}</td>
+                    <td>{{ line.get_item_type_display }}</td>
+                    <td>{{ line.qty }}</td>
+                    <td>{% if line.unit_price %}{{ line.unit_price }} {{ order.currency }}{% else %}-{% endif %}</td>
+                    <td>{% if line.unit_price %}{{ line.total_price }} {{ order.currency }}{% else %}-{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section class="totals">
+        <table>
+            <tr>
+                <th>المجموع الفرعي</th>
+                <td>{{ subtotal }} {{ order.currency }}</td>
+            </tr>
+            <tr>
+                <th>الخصم</th>
+                <td>{{ discount }} {{ order.currency }}</td>
+            </tr>
+            <tr>
+                <th>الإجمالي المستحق</th>
+                <td><span class="badge">{{ total }} {{ order.currency }}</span></td>
+            </tr>
+        </table>
+    </section>
+    <section class="footer">
+        <p>الشروط المختصرة: الأسعار بالدينار الأردني وتشمل التركيب حسب ما ورد أعلاه. مدة صلاحية العرض 14 يوم من تاريخ الإرسال.</p>
+        <div class="qr">
+            <p>تحميل العرض عبر QR:</p>
+            <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="QR" width="120" height="120" />
+        </div>
+    </section>
+</body>
+</html>
